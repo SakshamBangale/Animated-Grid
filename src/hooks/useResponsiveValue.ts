@@ -1,5 +1,3 @@
-// useResponsiveValue.ts
-
 import { useEffect, useMemo, useState } from "react";
 
 type ResponsiveValues<T> = {
