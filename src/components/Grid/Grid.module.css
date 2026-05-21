@@ -1,0 +1,509 @@
+/* =========================================================
+   griditem.css
+   Modern Library Grid Item Styles
+   ========================================================= */
+
+/* ------------------------------
+   Root Variables
+--------------------------------*/
+:root {
+  --card-bg: #ffffff;
+  --card-border: #e6e6e6;
+  --card-shadow: rgba(0, 0, 0, 0.08);
+  --card-shadow-hover: rgba(0, 0, 0, 0.18);
+
+  --primary: #2563eb;
+  --primary-light: #dbeafe;
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+
+  --text-main: #1f2937;
+  --text-secondary: #6b7280;
+
+  --radius: 18px;
+
+  --transition-fast: 0.2s ease;
+  --transition-medium: 0.35s ease;
+  --transition-slow: 0.5s ease;
+}
+
+/* =========================================================
+   Grid Item Container
+   ========================================================= */
+
+.grid-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  min-height: 420px;
+
+  background: var(--card-bg);
+
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+
+  overflow: hidden;
+
+  box-shadow:
+    0 4px 10px var(--card-shadow),
+    0 2px 4px rgba(0, 0, 0, 0.04);
+
+  transition:
+    transform var(--transition-medium),
+    box-shadow var(--transition-medium),
+    border-color var(--transition-fast);
+
+  cursor: pointer;
+}
+
+/* Hover Effect */
+.grid-item:hover {
+  transform: translateY(-8px);
+
+  border-color: var(--primary);
+
+  box-shadow:
+    0 12px 24px var(--card-shadow-hover),
+    0 6px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Active */
+.grid-item:active {
+  transform: scale(0.98);
+}
+
+/* =========================================================
+   Ribbon Badge
+   ========================================================= */
+
+.grid-item .badge {
+  position: absolute;
+  top: 16px;
+  left: -34px;
+
+  width: 140px;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    #1d4ed8
+  );
+
+  color: white;
+
+  text-align: center;
+
+  padding: 8px 0;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  transform: rotate(-45deg);
+
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+  z-index: 10;
+}
+
+/* =========================================================
+   Image Section
+   ========================================================= */
+
+.grid-item-image {
+  position: relative;
+
+  width: 100%;
+  height: 240px;
+
+  overflow: hidden;
+
+  background: #f3f4f6;
+}
+
+.grid-item-image img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform var(--transition-slow),
+    filter var(--transition-medium);
+}
+
+.grid-item:hover .grid-item-image img {
+  transform: scale(1.08);
+  filter: brightness(1.05);
+}
+
+/* Gradient Overlay */
+.grid-item-image::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.55),
+      rgba(0, 0, 0, 0.05)
+    );
+
+  opacity: 0;
+
+  transition: opacity var(--transition-medium);
+}
+
+.grid-item:hover .grid-item-image::after {
+  opacity: 1;
+}
+
+/* =========================================================
+   Content Section
+   ========================================================= */
+
+.grid-item-content {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  padding: 24px;
+}
+
+/* Title */
+.grid-item-title {
+  margin: 0;
+
+  font-size: 1.35rem;
+  font-weight: 700;
+
+  color: var(--text-main);
+
+  line-height: 1.4;
+
+  transition: color var(--transition-fast);
+}
+
+.grid-item:hover .grid-item-title {
+  color: var(--primary);
+}
+
+/* Author */
+.grid-item-author {
+  margin-top: 8px;
+
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+
+  font-weight: 500;
+}
+
+/* Description */
+.grid-item-description {
+  margin-top: 16px;
+
+  font-size: 0.95rem;
+  line-height: 1.7;
+
+  color: var(--text-secondary);
+
+  flex: 1;
+}
+
+/* =========================================================
+   Metadata
+   ========================================================= */
+
+.grid-item-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 20px;
+
+  padding-top: 16px;
+
+  border-top: 1px solid #f0f0f0;
+}
+
+.grid-item-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: var(--warning);
+
+  font-weight: 600;
+}
+
+.grid-item-category {
+  padding: 6px 12px;
+
+  border-radius: 999px;
+
+  background: var(--primary-light);
+  color: var(--primary);
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   Footer Actions
+   ========================================================= */
+
+.grid-item-footer {
+  display: flex;
+  gap: 12px;
+
+  margin-top: 24px;
+}
+
+/* Button Base */
+.grid-item-btn {
+  flex: 1;
+
+  border: none;
+  outline: none;
+
+  padding: 12px 18px;
+
+  border-radius: 12px;
+
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+/* Primary Button */
+.grid-item-btn.primary {
+  background: var(--primary);
+  color: white;
+}
+
+.grid-item-btn.primary:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 6px 14px rgba(37, 99, 235, 0.3);
+}
+
+/* Secondary Button */
+.grid-item-btn.secondary {
+  background: #f3f4f6;
+  color: var(--text-main);
+}
+
+.grid-item-btn.secondary:hover {
+  background: #e5e7eb;
+}
+
+/* Danger Button */
+.grid-item-btn.danger {
+  background: var(--danger);
+  color: white;
+}
+
+.grid-item-btn.danger:hover {
+  background: #b91c1c;
+}
+
+/* =========================================================
+   Status Indicators
+   ========================================================= */
+
+.grid-item-status {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+
+  border: 2px solid white;
+
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.4);
+}
+
+.grid-item-status.available {
+  background: var(--success);
+}
+
+.grid-item-status.borrowed {
+  background: var(--danger);
+}
+
+.grid-item-status.reserved {
+  background: var(--warning);
+}
+
+/* =========================================================
+   Tags
+   ========================================================= */
+
+.grid-item-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  margin-top: 18px;
+}
+
+.grid-item-tag {
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #f3f4f6;
+
+  color: var(--text-secondary);
+
+  font-size: 0.75rem;
+  font-weight: 600;
+
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.grid-item-tag:hover {
+  background: var(--primary);
+  color: white;
+}
+
+/* =========================================================
+   Skeleton Loading
+   ========================================================= */
+
+.grid-item.skeleton {
+  overflow: hidden;
+}
+
+.grid-item.skeleton::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.5),
+      transparent
+    );
+
+  animation: skeleton-loading 1.4s infinite;
+}
+
+@keyframes skeleton-loading {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+/* =========================================================
+   Responsive Design
+   ========================================================= */
+
+@media (max-width: 1024px) {
+  .grid-item {
+    min-height: 380px;
+  }
+
+  .grid-item-content {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .grid-item {
+    min-height: 340px;
+  }
+
+  .grid-item-title {
+    font-size: 1.15rem;
+  }
+
+  .grid-item-description {
+    font-size: 0.9rem;
+  }
+
+  .grid-item-footer {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-item {
+    border-radius: 14px;
+  }
+
+  .grid-item-content {
+    padding: 16px;
+  }
+
+  .grid-item-image {
+    height: 200px;
+  }
+
+  .grid-item-btn {
+    width: 100%;
+  }
+}
+
+/* =========================================================
+   Dark Theme Support
+   ========================================================= */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --card-bg: #111827;
+    --card-border: #374151;
+
+    --text-main: #f9fafb;
+    --text-secondary: #9ca3af;
+
+    --card-shadow: rgba(0, 0, 0, 0.35);
+    --card-shadow-hover: rgba(0, 0, 0, 0.55);
+  }
+
+  .grid-item-category {
+    background: rgba(37, 99, 235, 0.2);
+  }
+
+  .grid-item-tag {
+    background: #1f2937;
+  }
+
+  .grid-item-btn.secondary {
+    background: #1f2937;
+    color: #f9fafb;
+  }
+
+  .grid-item-btn.secondary:hover {
+    background: #374151;
+  }
+}
