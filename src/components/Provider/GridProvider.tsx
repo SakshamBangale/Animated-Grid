@@ -1,44 +1,106 @@
-// GridX - Lightweight Grid Layout Library
-// index.js
+// GridProvider.ts
+// GridX Layout Context Provider
 
-class GridX {
-  constructor(options = {}) {
+export interface GridProviderOptions {
+  columns?: number;
+  gap?: string;
+  rows?: string;
+  responsive?: boolean;
+}
+
+export interface GridBreakpoint {
+  maxWidth: number;
+  columns: number;
+}
+
+export class GridProvider {
+  private columns: number;
+  private gap: string;
+  private rows: string;
+  private responsive: boolean;
+  private breakpoints: GridBreakpoint[];
+
+  constructor(options: GridProviderOptions = {}) {
     this.columns = options.columns || 12;
     this.gap = options.gap || '16px';
     this.rows = options.rows || 'auto';
-    this.containerClass = options.containerClass || 'gridx-container';
-    this.itemClass = options.itemClass || 'gridx-item';
+    this.responsive = options.responsive ?? true;
+    this.breakpoints = [];
   }
 
-  createContainer(element) {
-    if (!element) {
-      throw new Error('GridX: Container element is required.');
+  public attach(container: HTMLElement): void {
+    if (!container) {
+      throw new Error('GridProvider: container is required');
     }
 
-    element.classList.add(this.containerClass);
-    element.style.display = 'grid';
-    element.style.gridTemplateColumns = `repeat(${this.columns}, 1fr)`;
-    element.style.gap = this.gap;
-    element.style.gridAutoRows = this.rows;
+    container.style.display = 'grid';
+    container.style.gridTemplateColumns = `repeat(${this.columns}, 1fr)`;
+    container.style.gap = this.gap;
+    container.style.gridAutoRows = this.rows;
+    container.style.width = '100%';
 
-    return element;
+    if (this.responsive) {
+      this.applyResponsive(container);
+    }
   }
 
-  createItem(element, options = {}) {
-    if (!element) {
-      throw new Error('GridX: Grid item element is required.');
-    }
+  public setColumns(columns: number): void {
+    this.columns = columns;
+  }
 
+  public setGap(gap: string): void {
+    this.gap = gap;
+  }
+
+  public setRows(rows: string): void {
+    this.rows = rows;
+  }
+
+  public addBreakpoint(maxWidth: number, columns: number): void {
+    this.breakpoints.push({
+      maxWidth,
+      columns
+    });
+
+    this.breakpoints.sort((a, b) => a.maxWidth - b.maxWidth);
+  }
+
+  private applyResponsive(container: HTMLElement): void {
+    const updateGrid = () => {
+      const width = window.innerWidth;
+
+      let activeColumns = this.columns;
+
+      for (const breakpoint of this.breakpoints) {
+        if (width <= breakpoint.maxWidth) {
+          activeColumns = breakpoint.columns;
+          break;
+        }
+      }
+
+      container.style.gridTemplateColumns = `repeat(${activeColumns}, 1fr)`;
+    };
+
+    updateGrid();
+
+    window.addEventListener('resize', updateGrid);
+  }
+
+  public createItem(
+    element: HTMLElement,
+    options: {
+      colSpan?: number;
+      rowSpan?: number;
+      colStart?: number;
+      rowStart?: number;
+    } = {}
+  ): HTMLElement {
     const {
       colSpan = 1,
       rowSpan = 1,
       colStart,
-      rowStart,
-      align = 'stretch',
-      justify = 'stretch'
+      rowStart
     } = options;
-
-    element.classList.add(this.itemClass);
 
     element.style.gridColumn = colStart
       ? `${colStart} / span ${colSpan}`
@@ -48,95 +110,42 @@ class GridX {
       ? `${rowStart} / span ${rowSpan}`
       : `span ${rowSpan}`;
 
-    element.style.alignSelf = align;
-    element.style.justifySelf = justify;
-
-    return element;
-  }
-
-  addResponsiveBreakpoint(element, breakpoint, columns) {
-    const styleId = `gridx-style-${breakpoint}`;
-
-    let styleTag = document.getElementById(styleId);
-
-    if (!styleTag) {
-      styleTag = document.createElement('style');
-      styleTag.id = styleId;
-      document.head.appendChild(styleTag);
-    }
-
-    styleTag.innerHTML += `
-      @media (max-width: ${breakpoint}px) {
-        .${this.containerClass} {
-          grid-template-columns: repeat(${columns}, 1fr);
-        }
-      }
-    `;
-
     return element;
   }
 }
 
-// Utility helpers
-const GridUtils = {
-  center(element) {
-    element.style.display = 'flex';
-    element.style.alignItems = 'center';
-    element.style.justifyContent = 'center';
-    return element;
-  },
-
-  card(element, radius = '20px', shadow = '0 10px 30px rgba(0,0,0,0.15)') {
-    element.style.borderRadius = radius;
-    element.style.boxShadow = shadow;
-    element.style.padding = '16px';
-    element.style.background = '#ffffff';
-    return element;
-  },
-
-  glass(element) {
-    element.style.backdropFilter = 'blur(14px)';
-    element.style.background = 'rgba(255,255,255,0.12)';
-    element.style.border = '1px solid rgba(255,255,255,0.2)';
-    return element;
-  }
-};
-
-// Factory function
-function createGridX(options = {}) {
-  return new GridX(options);
+// Helper factory
+export function createGridProvider(
+  options?: GridProviderOptions
+): GridProvider {
+  return new GridProvider(options);
 }
 
-// Export module
-export {
-  GridX,
-  GridUtils,
-  createGridX
-};
-
-export default GridX;
+export default GridProvider;
 
 /*
 Example Usage:
 
-import GridX, { GridUtils } from './index.js';
+import GridProvider from './GridProvider';
 
-const grid = new GridX({
-  columns: 4,
-  gap: '20px'
+const provider = new GridProvider({
+  columns: 6,
+  gap: '24px'
 });
 
-const container = document.getElementById('app');
-grid.createContainer(container);
+provider.addBreakpoint(1024, 4);
+provider.addBreakpoint(768, 2);
+provider.addBreakpoint(480, 1);
 
-const item = document.createElement('div');
-item.innerHTML = 'Hello GridX';
+const app = document.getElementById('app') as HTMLElement;
+provider.attach(app);
 
-grid.createItem(item, {
-  colSpan: 2,
-  rowSpan: 1
+const card = document.createElement('div');
+card.innerHTML = 'Responsive Card';
+
+provider.createItem(card, {
+  colSpan: 2
 });
 
-GridUtils.card(item);
-container.appendChild(item);
+app.appendChild(card);
 */
