@@ -123,29 +123,3 @@ export function createGridProvider(
 
 export default GridProvider;
 
-/*
-Example Usage:
-
-import GridProvider from './GridProvider';
-
-const provider = new GridProvider({
-  columns: 6,
-  gap: '24px'
-});
-
-provider.addBreakpoint(1024, 4);
-provider.addBreakpoint(768, 2);
-provider.addBreakpoint(480, 1);
-
-const app = document.getElementById('app') as HTMLElement;
-provider.attach(app);
-
-const card = document.createElement('div');
-card.innerHTML = 'Responsive Card';
-
-provider.createItem(card, {
-  colSpan: 2
-});
-
-app.appendChild(card);
-*/
