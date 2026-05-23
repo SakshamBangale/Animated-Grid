@@ -147,7 +147,9 @@ export class GridFX {
           p.baseY === point.baseY
       );
 
-      
+        public destroy() {
+    cancelAnimationFrame(this.animationFrame);
+  }
       if (right) {
         this.ctx.beginPath();
         this.ctx.moveTo(point.x, point.y);
