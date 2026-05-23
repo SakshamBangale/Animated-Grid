@@ -1,12 +1,4 @@
 
-export type GridPoint = {
-  x: number;
-  y: number;
-  baseX: number;
-  baseY: number;
-  size: number;
-  offset: number;
-};
 
 export interface GridOptions {
   gap?: number;
