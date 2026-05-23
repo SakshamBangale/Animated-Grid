@@ -7,6 +7,17 @@ export type GridPoint = {
   offset: number;
 };
 
+export interface GridOptions {
+  gap?: number;
+  pointSize?: number;
+  color?: string;
+  glowColor?: string;
+  speed?: number;
+  amplitude?: number;
+  background?: string;
+  perspective?: number;
+  interactive?: boolean;
+}
 
 
 export class GridFX {
