@@ -205,6 +205,9 @@ export class GridFX {
 
     this.animationFrame = requestAnimationFrame(this.animate);
   };
+    public destroy() {
+    cancelAnimationFrame(this.animationFrame);
+  }
 
 
 }
