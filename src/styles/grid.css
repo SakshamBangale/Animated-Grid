@@ -1,3 +1,41 @@
 
 
 
+// app/page.tsx
+
+export default function Home() {
+  const rows = 4;
+  const cols = 4;
+
+  const grid = Array.from({ length: rows }, (_, row) =>
+    Array.from({ length: cols }, (_, col) => ({
+      id: `${row}-${col}`,
+    }))
+  );
+
+  return (
+    <main className="min-h-screen bg-zinc-950 flex items-center justify-center p-10">
+      <div className="grid grid-cols-4 gap-4">
+        {grid.flat().map((cell) => (
+          <div
+            key={cell.id}
+            className="
+              w-24 h-24
+              rounded-2xl
+              bg-zinc-800
+              border border-zinc-700
+              shadow-[0_10px_30px_rgba(0,0,0,0.5)]
+              hover:scale-105
+              hover:bg-zinc-700
+              transition-all duration-300
+              flex items-center justify-center
+              text-white font-bold
+            "
+          >
+            {cell.id}
+          </div>
+        ))}
+      </div>
+    </main>
+  );
+}
