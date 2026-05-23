@@ -147,12 +147,7 @@ export class GridFX {
           p.baseY === point.baseY
       );
 
-      const bottom = this.points.find(
-        (p) =>
-          p.baseX === point.baseX &&
-          p.baseY === point.baseY + gap
-      );
-
+      
       if (right) {
         this.ctx.beginPath();
         this.ctx.moveTo(point.x, point.y);
